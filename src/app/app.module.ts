@@ -15,4 +15,6 @@ import { AppComponent } from './app.component';
   providers: [AuthService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+title = "BookStore"
+}
