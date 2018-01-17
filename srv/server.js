@@ -1,16 +1,16 @@
 var http = require('http')
-var MongoClient = require('mongodb').MongoClient
+var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert')
 var ObjectId = require('mongodb').ObjectID
 var url = require('url')
 var query = require('querystring')
 var express = require('express')
-var app = express()
+var app = express();
 var bodyParser = require('body-parser')
 // Server Config
 
 const PORT = 8000
-var mongoDBUrl = 'mongodb://book:cart@ds251217.mlab.com:51217/bookcart'
+var mongoDBUrl = "mongodb://book:cart@ds251217.mlab.com:51217/bookcart"
 
 function initialize (res, callback) {
   res.setHeader('Access-Control-Allow-Origin', '*')
@@ -20,13 +20,13 @@ function initialize (res, callback) {
     const db = database.db('bookcart')
     assert.equal(null, err)
     if (db !== null) { callback(db) }
-  })
+  });
 }
 
 // // Static Config
 
-app.listen(PORT)
-console.log('listenning')
+app.listen(PORT);
+console.log('listenning to the port',PORT)
 
 //  Get all items
 app.use(bodyParser.json())
@@ -34,11 +34,11 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 app.get('/items', function (req, res) {
   initialize(res, function (db) {
-    db.collection('items').find().toArray(function (err, result) {
+    db.collection("items").find().toArray(function (err, result) {
       assert.equal(err, null)
       if (result !== null) {
-        res.end(JSON.stringify(result))
-        db.close()
+        res.end(JSON.stringify(result));
+        db.close();
       }
     })
   })
@@ -62,12 +62,12 @@ app.get('/cart', function (req, res) {
 // Set cart
 
 app.post('/add', function (req, res) {
-  console.log('-------', req.body)
+  console.log('-------', req.body);
   initialize(res, function (db) {
     db.collection('cart').insertOne(req.body, function (err, result) {
       assert.equal(err, null)
       if (result !== null) {
-        res.end(JSON.stringify({ msg: '' }))
+        res.end(JSON.stringify({ msg: '' }));
         db.close()
       }
     })
