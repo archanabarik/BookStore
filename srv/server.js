@@ -18,19 +18,19 @@ var mongoDBUrl = "mongodb://book:cart@ds251217.mlab.com:51217/bookcart";
 
 function initialize (res, callback) {
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.writeHead(200, {'Content-Type': 'application/json'})
+  res.writeHead(200, {'Content-Type': 'application/json'});
 
   MongoClient.connect(mongoDBUrl, function (err, database) {
-    const db = database.db('bookcart')
-    assert.equal(null, err)
+    const db = database.db("bookcart");
+    assert.equal(null, err);
     if (db !== null) { callback(db) }
-  })
+  });
 }
 
 // // Static Config
 
 app.listen(PORT);
-console.log('listenning to the port', PORT);
+console.log("listenning to the port", PORT);
 
 //  Get all items
 app.use(bodyParser.json());
@@ -52,11 +52,11 @@ const jwtCheck = jwt({
 })
 
 const adminCheck = (req, res, next) => {
-  const roles = req.user[config.NAMESPACE] || []
+  const roles = req.user[config.NAMESPACE] || [];
   if (roles.indexOf('admin') > -1) {
-    next()
+    next();
   } else {
-    res.status(401).send({message: 'Not authorized for admin access'})
+    res.status(401).send({message: 'Not authorized for admin access'});
   }
 }
 
@@ -65,7 +65,7 @@ app.get('/items', function (req, res) {
     db.collection('items').find().toArray(function (err, result) {
       assert.equal(err, null);
       if (result !== null) {
-        res.end(JSON.stringify(result))
+        res.end(JSON.stringify(result));
        
       }
     })
@@ -77,7 +77,7 @@ app.get('/items', function (req, res) {
 app.get('/item', function (req, res) {
   initialize(res, function (db) {
     db.collection('items').find({ 'id': url.parse(req.url, true).query.id }).each(function (err, result) {
-      assert.equal(err, null)
+      assert.equal(err, null);
       if (result !== null) {
         
         res.end(JSON.stringify(result))
@@ -95,7 +95,7 @@ app.post('/insert', function (req, res) {
     db.collection('items').insertOne(JSON.parse(req.body.insert), function (err, result) {
       assert.equal(err, null)
       if (result !== null) {
-        res.end(JSON.stringify({ msg: '' }))
+        res.end(JSON.stringify({ msg: '' }));
        
       }
     })
@@ -105,7 +105,7 @@ app.post('/insert', function (req, res) {
 // Update item
 
 app.post('/update', function (req, res) {
-  var update = JSON.parse(req.body.update)
+  var update = JSON.parse(req.body.update);
   
   initialize(res, function (db) {
     db.collection('items').find({ 'id': update.id }).each(function (err, result) {
@@ -142,17 +142,17 @@ app.get('/cart', function (req, res) {
 })
 
 function removeUnwantedKeys (body) {
-  delete body['paid']
-  delete body['name']
-  delete body['code']
-  delete body['unitPrice']
-  return body
+  delete body['paid'];
+  delete body['name'];
+  delete body['code'];
+  delete body['unitPrice'];
+  return body;
 }
 
 app.post('/revise', function (req, res) {
-  var revise = JSON.parse(req.body.revise)
-  revise = removeUnwantedKeys(revise)
-  revise._id = new ObjectId(revise._id)
+  var revise = JSON.parse(req.body.revise);
+  revise = removeUnwantedKeys(revise);
+  revise._id = new ObjectId(revise._id);
   
   initialize(res, function (db) {
     db.collection('cart').find({ '_id': revise._id }).each(function (err, result) {
