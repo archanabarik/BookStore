@@ -1,0 +1,82 @@
+<div class='panel-body'>
+    <div class="col-md-11">
+        <ol class="breadcrumb">
+            <li><a class="btn btn-default btn-link" role="button" (click)='goBack()'>Home</a></li>
+            <li class="active">Detail</li>
+            <li class="active" *ngIf='shopItem'>{{ shopItem.code }}</li>
+        </ol>
+        <div class="thumbnail" *ngIf='shopItem'>
+            <div class="row">
+                <div class="col-md-10">
+                    <img class="img-responsive" [src]="shopItem.imageUrl" alt="">
+                </div>
+                <div class="col-md-2">
+                    <h3>
+                        <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                    </h3>
+                    <br/>
+                    <h5>Code: <small>{{ shopItem.code }}</small></h5>
+                    <h5>Quantity: <small>{{ shopItem.quantityInStock }}</small></h5>
+                    <h5>Released: <small>{{ shopItem.releaseDate }}</small></h5>
+                    <h5>Price: <small>₹{{ shopItem.unitPrice }}</small></h5>
+                    <br/>
+                    <nav aria-label="...">
+                        <ul class="pager">
+                            <li class="previous"><a class="btn btn-default btn-sm" role="button" (click)='goBack()'><span aria-hidden="true">&larr;</span> Back</a></li>
+                        </ul>
+                     </nav>
+                </div>
+            </div>
+            <div class="caption-full">
+                <div class="col-md-12">
+                    <h4>Product: <small>{{ shopItem.name }}</small></h4>
+                    <p>{{ shopItem.description }}</p>
+                    <p class="pull-right">{{ reviewsCount }} reviews</p>
+                </div>
+            </div>
+            <div class="ratings">
+                Rating: <p-rating [(ngModel)]="shopItem.rating" [cancel]="false" readonly="true"></p-rating>
+            </div>
+        </div>
+        <div class="well">
+            <h4>
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Customer Reviews
+            </h4>
+            <hr>
+            <div class="row" *ngFor='let shopItemReview of shopItemReviews'>
+                <div class="col-md-12">
+                    <br/>
+                    <p-rating [(ngModel)]="shopItemReview.rating" [cancel]="false" readonly="true"></p-rating>
+                    <span class="pull-right">{{shopItemReview.reviewDate | date:'dd-MMMM-yyyy'}}</span>
+                    <p>{{ shopItemReview.remarks }}</p> - by {{ shopItemReview.userId }}
+                </div>
+            </div>
+            <br/>
+            <form (ngSubmit)="onSubmit(remarks.value)">
+                <div class="row">
+                    <div class="col-xs-12 col-md-8">
+                        <h4>
+                            <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> Compose
+                        </h4>
+                    </div>
+                </div>              
+                <div class="row">
+                    <div class="col-xs-12 col-md-8">
+                        <p-rating name="rating" [(ngModel)]="starRating"></p-rating>
+                    </div>
+                </div>
+                <div class="row">
+                    <br/>
+                  <div class="col-xs-12 col-md-8">
+                    <div class="form-group">
+                        <textarea class="form-control" id="remarks" #remarks placeholder="Share with us your thoughts & experiences" [(ngModel)]="reviewText" [ngModelOptions]="{standalone: true}" [disabled]='!auth.authenticated'></textarea>
+                    </div>
+                  </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-success" [disabled]='!auth.authenticated'>Submit Review</button>
+                    </div>
+                </div>
+              </form>
+        </div>
+    </div>
+</div>

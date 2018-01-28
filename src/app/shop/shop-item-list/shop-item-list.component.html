@@ -1,0 +1,64 @@
+<div>
+    <shop-item-form (shopItemsUpdated)="getShopItems($event);" *ngIf='auth.isAdmin'></shop-item-form>
+    <div class='panel-body'>
+        <div class='row'>
+            <div class="input-group">
+                <div class="input-group-addon">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                </div>
+                <input type="text" class="form-control" id="exampleInputAmount" placeholder="Search for..." [(ngModel)]='filterBy'>
+                <div class="input-group-addon" *ngIf='auth.isAdmin'>
+                    <a data-toggle="modal" href="#shopItemModal">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="input-group-addon" *ngIf='auth.authenticated'>
+                    <a [routerLink]="['/cart', customerId]">
+                        <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <p *ngIf='showLoading' style="text-align:center"><br/><br/><br/><br/><img src="assets/spin.svg"/></p>
+        <div class="row" *ngIf='shopItems && shopItems.length' >
+            <div class="col-sm-3 col-lg-3 col-md-3" *ngFor='let shopItem of shopItems | shopItemFilter:filterBy'>
+                <div class="thumbnail" style="height:250px">
+                    <img [src]="shopItem.imageUrl" style="height:100px;" alt="">
+                    <div class="caption">
+                        <h4 class="pull-right">₹{{shopItem.unitPrice}}</h4>
+                        <h4 id='shopItem{{shopItem.id}}Title'>{{shopItem.name}}
+                          <a data-toggle="modal" href="#{{shopItem.id}}" *ngIf='auth.isAdmin'>
+                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                          </a>
+                       </h4>
+                    </div>
+                    <div class="ratings">
+                        <p class="pull-right">{{cartItemReviews[shopItem.id]}} reviews</p>
+                        <div class="crop">
+                            <div style="width: 86px">
+                                <p-rating [(ngModel)]="shopItem.rating" [cancel]="false" readonly="true"></p-rating>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <button type="button" class="btn btn-primary" (click)='addToCart(shopItem)' [disabled]='!auth.authenticated'>
+                                Add to Cart
+                            </button>
+                            <!-- <a href="#" class="btn btn-default btn disabled" role="button">
+                                <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>&nbsp;<span class="badge">{{customerCartItems[shopItem.id]}}</span>
+                            </a> -->
+                            <a [routerLink]="['/item', shopItem.id]" class="btn btn-success" role="button">
+                                <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                            </a>
+                            <shop-item-form [shopItem]='shopItem' (shopItemsUpdated)="getShopItems($event);" *ngIf='auth.isAdmin'></shop-item-form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

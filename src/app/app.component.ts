@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-
-
-import { AuthService } from './shared/auth-service';
+import { HomeComponent } from './home/home.component';
 
 @Component({
   selector: 'app-root',
@@ -9,5 +7,4 @@ import { AuthService } from './shared/auth-service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'BookStore';
 }
