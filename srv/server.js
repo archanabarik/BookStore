@@ -1,11 +1,11 @@
 var http = require('http')
-var MongoClient = require('mongodb').MongoClient;
+var MongoClient = require('mongodb').MongoClient
 var assert = require('assert')
 var ObjectId = require('mongodb').ObjectID
 var url = require('url')
 var query = require('querystring')
 var express = require('express')
-var app = express();
+var app = express()
 var bodyParser = require('body-parser')
 const cors = require('cors')
 const jwt = require('express-jwt')
@@ -13,13 +13,8 @@ const jwks = require('jwks-rsa')
 const config = require('./config.js')
 // Server Config
 
-<<<<<<< Updated upstream
-const PORT = 8000
-var mongoDBUrl = "mongodb://book:cart@ds251217.mlab.com:51217/bookcart"
-=======
 const PORT = 8080
 var mongoDBUrl = 'mongodb://book:cart@ds251217.mlab.com:51217/bookcart'
->>>>>>> Stashed changes
 
 function initialize (res, callback) {
   res.setHeader('Access-Control-Allow-Origin', '*')
@@ -29,18 +24,13 @@ function initialize (res, callback) {
     const db = database.db('bookcart')
     assert.equal(null, err)
     if (db !== null) { callback(db) }
-  });
+  })
 }
 
 // // Static Config
 
-<<<<<<< Updated upstream
-app.listen(PORT);
-console.log('listenning to the port',PORT)
-=======
 app.listen(PORT)
 console.log('listenning to the port', PORT)
->>>>>>> Stashed changes
 
 //  Get all items
 app.use(bodyParser.json())
@@ -72,13 +62,9 @@ const adminCheck = (req, res, next) => {
 
 app.get('/items', function (req, res) {
   initialize(res, function (db) {
-    db.collection("items").find().toArray(function (err, result) {
+    db.collection('items').find().toArray(function (err, result) {
       assert.equal(err, null)
       if (result !== null) {
-<<<<<<< Updated upstream
-        res.end(JSON.stringify(result));
-        db.close();
-=======
         res.end(JSON.stringify(result))
         // db.close()
       }
@@ -134,7 +120,6 @@ app.post('/update', function (req, res) {
             // db.close()
           }
         })
->>>>>>> Stashed changes
       }
     })
   })
@@ -246,18 +231,13 @@ app.get('/ratings', function (req, res) {
 // Set cart
 
 app.post('/add', function (req, res) {
-  console.log('-------', req.body);
+  console.log('-------', req.body)
   initialize(res, function (db) {
     db.collection('cart').insertOne(JSON.parse(req.body.add), function (err, result) {
       assert.equal(err, null)
       if (result !== null) {
-<<<<<<< Updated upstream
-        res.end(JSON.stringify({ msg: '' }));
-        db.close()
-=======
         res.end(JSON.stringify({ msg: '' }))
        // db.close()
->>>>>>> Stashed changes
       }
     })
   })
