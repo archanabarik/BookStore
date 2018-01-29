@@ -49,7 +49,7 @@ const jwtCheck = jwt({
   audience: config.AUTH0_AUDIENCE,
   issuer: `https://${config.CLIENT_DOMAIN}/`,
   algorithm: "RS256"
-})
+});
 
 const adminCheck = (req, res, next) => {
   const roles = req.user[config.NAMESPACE] || [];
@@ -218,6 +218,7 @@ app.get("/ratings", function (req, res) {
   initialize(res, function (db) {
     db.collection("review").aggregate([{$group: {_id: '$itemId', rating: {$avg: '$rating'}}}]).toArray(function (err, result) {
       var ratings = {};
+      var item;
       for (item of result) {
         ratings[item["_id"]] = item["rating"];
       }
@@ -251,7 +252,7 @@ app.post("/addreview", function (req, res) {
     db.collection("review").insertOne(JSON.parse(req.body.review), function (err, result) {
       assert.equal(err, null);
       if (result !== null) {
-        res.end(JSON.stringify({ msg: '' }));
+        res.end(JSON.stringify({ msg: "" }));
        
       }
     })
