@@ -30,7 +30,7 @@ function initialize (res, callback) {
 // // Static Config
 
 app.listen(PORT);
-console.log("listenning to the port", PORT);
+//console.log("listenning to the port", PORT);
 
 //  Get all items
 app.use(bodyParser.json());
@@ -68,7 +68,7 @@ app.get("/items", function (req, res) {
         res.end(JSON.stringify(result));
        
       }
-    })
+    });
   })
 })
 
@@ -216,7 +216,7 @@ app.get("/reviewcount", function (req, res) {
 
 app.get("/ratings", function (req, res) {
   initialize(res, function (db) {
-    db.collection("review").aggregate([{$group: {_id: '$itemId', rating: {$avg: '$rating'}}}]).toArray(function (err, result) {
+    db.collection("review").aggregate([{$group: {_id: "$itemId", rating: {$avg: "$rating"}}}]).toArray(function (err, result) {
       var ratings = {};
       var item;
       for (item of result) {
