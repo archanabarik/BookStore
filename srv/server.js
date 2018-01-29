@@ -18,12 +18,12 @@ var mongoDBUrl = "mongodb://book:cart@ds251217.mlab.com:51217/bookcart";
 
 function initialize (res, callback) {
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.writeHead(200, {'Content-Type': 'application/json'});
+  res.writeHead(200, {"Content-Type": "application/json"});
 
   MongoClient.connect(mongoDBUrl, function (err, database) {
     const db = database.db("bookcart");
     assert.equal(null, err);
-    if (db !== null) { callback(db) }
+    if (db !== null) { callback(db); }
   });
 }
 
@@ -48,7 +48,7 @@ const jwtCheck = jwt({
   }),
   audience: config.AUTH0_AUDIENCE,
   issuer: `https://${config.CLIENT_DOMAIN}/`,
-  algorithm: 'RS256'
+  algorithm: "RS256"
 })
 
 const adminCheck = (req, res, next) => {
@@ -58,7 +58,7 @@ const adminCheck = (req, res, next) => {
   } else {
     res.status(401).send({message: "Not authorized for admin access"});
   }
-}
+};
 
 app.get("/items", function (req, res) {
   initialize(res, function (db) {
@@ -80,7 +80,7 @@ app.get("/item", function (req, res) {
       assert.equal(err, null);
       if (result !== null) {
         
-        res.end(JSON.stringify(result))
+        res.end(JSON.stringify(result));
        
       }
     })
@@ -93,7 +93,7 @@ app.post("/insert", function (req, res) {
   
   initialize(res, function (db) {
     db.collection("items").insertOne(JSON.parse(req.body.insert), function (err, result) {
-      assert.equal(err, null)
+      assert.equal(err, null);
       if (result !== null) {
         res.end(JSON.stringify({ msg: "" }));
        
@@ -109,14 +109,14 @@ app.post("/update", function (req, res) {
   
   initialize(res, function (db) {
     db.collection("items").find({ "id": update.id }).each(function (err, result) {
-      assert.equal(err, null)
+      assert.equal(err, null);
       if (result !== null) {
         
         db.collection("items").updateOne(result, {$set: update}, function (err, updateresult) {
-          assert.equal(err, null)
+          assert.equal(err, null);
           
           if (updateresult !== null) {
-            res.end(JSON.stringify({ msg: "" }))
+            res.end(JSON.stringify({ msg: "" }));
             
           }
         })
@@ -132,9 +132,9 @@ app.get("/cart", function (req, res) {
   initialize(res, function (db) {
     
     db.collection("cart").find({ "userId": url.parse(req.url, true).query.userId }).toArray(function (err, result) {
-      assert.equal(err, null)
+      assert.equal(err, null);
       if (result !== null) {
-        res.end(JSON.stringify(result))
+        res.end(JSON.stringify(result));
         
       }
     })
@@ -156,13 +156,13 @@ app.post("/revise", function (req, res) {
   
   initialize(res, function (db) {
     db.collection("cart").find({ "_id": revise._id }).each(function (err, result) {
-      assert.equal(err, null)
+      assert.equal(err, null);
       if (result !== null) {
         
         db.collection("cart").updateOne(result, {$set: {"quantity": revise.quantity}}, function (err, updateresult) {
-          assert.equal(err, null)
+          assert.equal(err, null);
           if (updateresult !== null) {
-            res.end(JSON.stringify({ msg: "" }))
+            res.end(JSON.stringify({ msg: "" }));
             
           }
         })
@@ -172,15 +172,15 @@ app.post("/revise", function (req, res) {
 })
 
 app.post("/remove", function (req, res) {
-  var remove = JSON.parse(req.body.remove)
-  remove = removeUnwantedKeys(remove)
-  remove._id = new ObjectId(remove._id)
+  var remove = JSON.parse(req.body.remove);
+  remove = removeUnwantedKeys(remove);
+  remove._id = new ObjectId(remove._id);
   
   initialize(res, function (db) {
     db.collection("cart").deleteOne(remove, function (err, result) {
-      assert.equal(err, null)
+      assert.equal(err, null);
       if (result !== null) {
-        res.end(JSON.stringify({ msg: "" }))
+        res.end(JSON.stringify({ msg: "" }));
         
       }
     })
@@ -192,9 +192,9 @@ app.post("/remove", function (req, res) {
 app.get("/review", function (req, res) {
   initialize(res, function (db) {
     db.collection("review").find({ "itemId": url.parse(req.url, true).query.itemId }).toArray(function (err, result) {
-      assert.equal(err, null)
+      assert.equal(err, null);
       if (result !== null) {
-        res.end(JSON.stringify(result))
+        res.end(JSON.stringify(result));
         
       }
     })
@@ -206,7 +206,7 @@ app.get("/review", function (req, res) {
 app.get("/reviewcount", function (req, res) {
   initialize(res, function (db) {
     db.collection("review").find({ "itemId": url.parse(req.url, true).query.itemId }).count(function (err, count) {
-      res.end(JSON.stringify(count))
+      res.end(JSON.stringify(count));
       
     })
   })
@@ -217,12 +217,12 @@ app.get("/reviewcount", function (req, res) {
 app.get("/ratings", function (req, res) {
   initialize(res, function (db) {
     db.collection("review").aggregate([{$group: {_id: '$itemId', rating: {$avg: '$rating'}}}]).toArray(function (err, result) {
-      var ratings = {}
+      var ratings = {};
       for (item of result) {
-        ratings[item["_id"]] = item["rating"]
+        ratings[item["_id"]] = item["rating"];
       }
 
-      res.end(JSON.stringify(ratings))
+      res.end(JSON.stringify(ratings));
       
     })
   })
@@ -234,9 +234,9 @@ app.post("/add", function (req, res) {
   
   initialize(res, function (db) {
     db.collection("cart").insertOne(JSON.parse(req.body.add), function (err, result) {
-      assert.equal(err, null)
+      assert.equal(err, null);
       if (result !== null) {
-        res.end(JSON.stringify({ msg: "" }))
+        res.end(JSON.stringify({ msg: "" }));
        
       }
     })
@@ -249,9 +249,9 @@ app.post("/addreview", function (req, res) {
   
   initialize(res, function (db) {
     db.collection("review").insertOne(JSON.parse(req.body.review), function (err, result) {
-      assert.equal(err, null)
+      assert.equal(err, null);
       if (result !== null) {
-        res.end(JSON.stringify({ msg: '' }))
+        res.end(JSON.stringify({ msg: '' }));
        
       }
     })
