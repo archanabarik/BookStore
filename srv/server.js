@@ -116,7 +116,7 @@ app.post("/update", function (req, res) {
             res.end(JSON.stringify({ msg: "" }));
             
           }
-        })
+        });
       }
     });
   });
@@ -162,7 +162,7 @@ app.post("/revise", function (req, res) {
             res.end(JSON.stringify({ msg: "" }));
             
           }
-        })
+        });
       }
     });
   });
