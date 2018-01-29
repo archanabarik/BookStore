@@ -98,32 +98,29 @@ app.post("/insert", function (req, res) {
         res.end(JSON.stringify({ msg: "" }));
        
       }
-    })
-  })
-})
+    });
+  });
+});
 
 // Update item
 
 app.post("/update", function (req, res) {
   var update = JSON.parse(req.body.update);
-  
   initialize(res, function (db) {
     db.collection("items").find({ "id": update.id }).each(function (err, result) {
       assert.equal(err, null);
-      if (result !== null) {
-        
+      if (result !== null) { 
         db.collection("items").updateOne(result, {$set: update}, function (err, updateresult) {
           assert.equal(err, null);
-          
           if (updateresult !== null) {
             res.end(JSON.stringify({ msg: "" }));
             
           }
         })
       }
-    })
-  })
-})
+    });
+  });
+});
 
 // Get cart items by user identifier
 
@@ -167,9 +164,9 @@ app.post("/revise", function (req, res) {
           }
         })
       }
-    })
-  })
-})
+    });
+  });
+});
 
 app.post("/remove", function (req, res) {
   var remove = JSON.parse(req.body.remove);
@@ -183,9 +180,9 @@ app.post("/remove", function (req, res) {
         res.end(JSON.stringify({ msg: "" }));
         
       }
-    })
-  })
-})
+    });
+  });
+});
 
 //  Get reviews by item
 
@@ -225,9 +222,9 @@ app.get("/ratings", function (req, res) {
 
       res.end(JSON.stringify(ratings));
       
-    })
-  })
-})
+    });
+  });
+});
 
 // Set cart
 
@@ -240,9 +237,9 @@ app.post("/add", function (req, res) {
         res.end(JSON.stringify({ msg: "" }));
        
       }
-    })
-  })
-})
+    });
+  });
+});
 
 // Set review
 
@@ -255,6 +252,6 @@ app.post("/addreview", function (req, res) {
         res.end(JSON.stringify({ msg: "" }));
        
       }
-    })
-  })
-})
+    });
+  });
+});
