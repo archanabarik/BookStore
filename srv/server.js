@@ -83,9 +83,9 @@ app.get("/item", function (req, res) {
         res.end(JSON.stringify(result));
        
       }
-    })
-  })
-})
+    });
+  });
+});
 
 // Set item
 
@@ -137,9 +137,9 @@ app.get("/cart", function (req, res) {
         res.end(JSON.stringify(result));
         
       }
-    })
-  })
-})
+    });
+  });
+});
 
 function removeUnwantedKeys (body) {
   delete body["paid"];
@@ -197,9 +197,9 @@ app.get("/review", function (req, res) {
         res.end(JSON.stringify(result));
         
       }
-    })
-  })
-})
+    });
+  });
+});
 
 // Get review count for given item
 
@@ -208,9 +208,9 @@ app.get("/reviewcount", function (req, res) {
     db.collection("review").find({ "itemId": url.parse(req.url, true).query.itemId }).count(function (err, count) {
       res.end(JSON.stringify(count));
       
-    })
-  })
-})
+    });
+  });
+});
 
 //  Get ratings for shop items
 
