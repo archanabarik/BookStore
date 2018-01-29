@@ -69,7 +69,7 @@ app.get("/items", function (req, res) {
        
       }
     });
-  })
+  });
 })
 
 // Get item by identifier
